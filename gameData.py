@@ -62,6 +62,15 @@ for i, frame in enumerate(frames):
                         gameFrames[t].turretDifference += 1 #if it was team 1 add to the difference
                     else:
                         gameFrames[t].turretDifference -= 1 #if it was team 2 subtract from the difference
+            elif event.get("buildingType") == "INHIBITOR_BUILDING":
+                end = i+5 #inhibitors last for 5 minutes
+                if end > len(gameFrames):
+                    end = len(gameFrames)
+                for t in range(i,end):
+                    if team == 1:
+                        gameFrames[t].inhibsDestroyed[0] += 1
+                    else:
+                        gameFrames[t].inhibsDestroyed[1] += 1
 
             print(event.get("buildingType"), "destroyed by Team ", team) #print building destroyed and by which team
             #100 = blue team, 200 = red team (based on testing)
