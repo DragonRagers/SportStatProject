@@ -1,6 +1,7 @@
 from riotwatcher import RiotWatcher, ApiError #https://github.com/pseudonym117/Riot-Watcher
 from gameFrame import GameFrame
 
+
 #create RiotWatcher object and initialize some constants for testing
 key = input("Enter Riot API Key: ") #currently using development key, may apply for project key when project is actually working
 watcher = RiotWatcher(key)
@@ -38,7 +39,7 @@ for i, frame in enumerate(frames):
             experienceDifference += player.get("xp")
         else: #if on team 2 subtract fom goldDifference and experienceDifference
             goldDifference -= player.get("totalGold")
-            experienceDifference += player.get("xp")
+            experienceDifference -= player.get("xp")
     print("Gold Difference:", goldDifference)
     print("Experience Difference:", experienceDifference)
     gameFrames[i].goldDifference = goldDifference
