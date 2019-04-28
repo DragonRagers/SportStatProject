@@ -50,14 +50,19 @@ for i, frame in enumerate(frames):
         #on building kill
         type = event.get("type")
         if type == "BUILDING_KILL":
-            if event.get("teamId") == 200: #blue destroyed red turret
+            if event.get("teamId") == 200: #blue destroyed red building
                 team = 1
-                for t in range(i,len(gameFrames)):
-                    gameFrames[t].turretDifference += 1
-            else:
+            else: #red team destroyed blue building
                 team = 2
-                for t in range(i,len(gameFrames)):
-                    gameFrames[t].turretDifference -= 1
+
+            #if it was a tower/turret
+            if event.get("buildingType") == "TOWER_BUILDING":
+                for t in range(i,len(gameFrames)): #for frames from now to the end of the game
+                    if team == 1:
+                        gameFrames[t].turretDifference += 1 #if it was team 1 add to the difference
+                    else:
+                        gameFrames[t].turretDifference -= 1 #if it was team 2 subtract from the difference
+
             print(event.get("buildingType"), "destroyed by Team ", team) #print building destroyed and by which team
             #100 = blue team, 200 = red team (based on testing)
 
