@@ -14,16 +14,16 @@ class GameFrame:
         self.dragons = [0,0,0,0, 0,0,0,0] #ie [1,0,0...] could mean team 1 has one infernal dragon
 
          #difference in team expereience (unit to level conversion can likely be found on a wiki)
-        self.xpDifference = None
+        self.xpDifference = 0
 
         #current team gold differentials
-        self.goldDifference = None
+        self.goldDifference = 0
 
-        #TBD: either differential or tuple for number destroyed per team
-        self.turretDestroyed = None
+        #difference in turrets destroyed
+        self.turretDifference = 0
 
         #tuple for number each team has destoryed
-        self.inhibsDestroyed = None
+        self.inhibsDestroyed = 0
 
     def toArray(self):
-        return [self.time] + self.baron + self.dragons + [self.xpDifference, self.goldDifference, self.turretDestroyed, self.inhibsDestroyed]
+        return [self.time] + self.baron + self.dragons + [self.xpDifference, self.goldDifference, self.turretDifference, self.inhibsDestroyed]
