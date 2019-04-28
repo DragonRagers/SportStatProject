@@ -1,5 +1,5 @@
 from riotwatcher import RiotWatcher, ApiError #https://github.com/pseudonym117/Riot-Watcher
-import GameFrame
+from gameFrame import GameFrame
 
 #create RiotWatcher object and initialize some constants for testing
 key = input("Enter Riot API Key: ") #currently using development key, may apply for project key when project is actually working
@@ -10,8 +10,14 @@ gameid = 3024748419 #one of my recent games
 game = watcher.match.timeline_by_match(region, gameid) #returns dictionary of game info
 #documentation of API here: https://developer.riotgames.com/api-methods/
 
+
 #print(game, "\n")
+#get list of all frames and create list of blank GameFrame's
 frames = game.get("frames")
+gameFrames = []
+for i in range(len(frames)):
+    gameFrames.append(GameFrame(i))
+
 for i, frame in enumerate(frames):
     print("\nMinute:", i) #where i analogous to in game minutes
 
@@ -20,8 +26,8 @@ for i, frame in enumerate(frames):
     experienceDifference = 0
     participantFrames = frame.get("participantFrames")
     #print(participantFrames)
-    for i in range(1,11): #for every player (assuming 10)
-        player = participantFrames.get(str(i))
+    for p in range(1,11): #for every player (assuming 10)
+        player = participantFrames.get(str(p))
         if player.get("participantId") <= 5: #if player on team 1
             team = True
         else: #else player on team 2
@@ -35,6 +41,8 @@ for i, frame in enumerate(frames):
             experienceDifference += player.get("xp")
     print("Gold Difference:", goldDifference)
     print("Experience Difference:", experienceDifference)
+    gameFrames[i].goldDifference = goldDifference
+    gameFrames[i].xpDifference = experienceDifference
 
     #prints objective kills (towers, inhibs, dragons, barons)
     events = frame.get("events")
@@ -42,7 +50,15 @@ for i, frame in enumerate(frames):
         #on building kill
         type = event.get("type")
         if type == "BUILDING_KILL":
-            print(event.get("buildingType"), "Team ", event.get("teamId")) #print building destroyed and by which team
+            if event.get("teamId") == 200: #blue destroyed red turret
+                team = 1
+                for t in range(i,len(gameFrames)):
+                    gameFrames[t].turretDifference += 1
+            else:
+                team = 2
+                for t in range(i,len(gameFrames)):
+                    gameFrames[t].turretDifference -= 1
+            print(event.get("buildingType"), "destroyed by Team ", team) #print building destroyed and by which team
             #100 = blue team, 200 = red team (based on testing)
 
         #on epic (elite) monster kill
@@ -58,3 +74,6 @@ for i, frame in enumerate(frames):
 
             elif monsterType == "BARON_NASHOR": #if baron
                 print("BARON_NASHOR slain by Team", team) #print baron and team
+
+for gF in gameFrames:
+    print(gF.toArray())
