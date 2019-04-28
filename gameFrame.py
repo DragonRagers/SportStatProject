@@ -22,8 +22,8 @@ class GameFrame:
         #difference in turrets destroyed
         self.turretDifference = 0
 
-        #tuple for number each team has destoryed
-        self.inhibsDestroyed = 0
+        #"tuple" for number each team has destoryed
+        self.inhibsDestroyed = [0,0]
 
     def toArray(self):
-        return [self.time] + self.baron + self.dragons + [self.xpDifference, self.goldDifference, self.turretDifference, self.inhibsDestroyed]
+        return [self.time] + self.baron + self.dragons + [self.xpDifference, self.goldDifference, self.turretDifference] + self.inhibsDestroyed
