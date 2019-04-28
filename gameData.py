@@ -14,23 +14,43 @@ game = watcher.match.timeline_by_match(region, gameid) #returns dictionary of ga
 #print(game, "\n")
 frames = game.get("frames")
 for i, frame in enumerate(frames):
-    print("Frame: ", i)
+    print("\nMinute:", i) #where i analogous to in game minutes
+
+    goldDifference = 0
+    participantFrames = frame.get("participantFrames")
+    #print(participantFrames)
+    for i in range(1,11): #for every player (assuming 10)
+        player = participantFrames.get(str(i))
+        if player.get("participantId") <= 5: #if player on team 1
+            team = True
+        else: #else player on team 2
+            team = False
+
+        if team: #if on team 1 add to the goldDifference
+            goldDifference += player.get("totalGold")
+        else: #if on team 2 subtract fom goldDifference
+            goldDifference -= player.get("totalGold")
+    print("Gold Difference:", goldDifference)
+
+
     events = frame.get("events")
     for event in events:
         #on building kill
-        if event.get("type") == "BUILDING_KILL":
+        type = event.get("type")
+        if type == "BUILDING_KILL":
             print(event.get("buildingType"), "Team ", event.get("teamId")) #print building destroyed and by which team
             #100 = blue team, 200 = red team (based on testing)
 
         #on epic (elite) monster kill
-        elif event.get("type") == "ELITE_MONSTER_KILL":
-            if event.get("monsterType") == "DRAGON": #if dragon
-                print(event.get("monsterSubType"))  #print dragon type
-
-            elif event.get("monsterType") == "BARON_NASHOR": #if baron
-                print("Baron Nashor") #print baron
-
+        elif type == "ELITE_MONSTER_KILL":
             if event.get("killerId") <= 5: #if killed by someone on team 1
-                print("by Team 1")
+                team = 1
             else: #else it was killed by team 2
-                print("by Team 2")
+                team = 2
+
+            monsterType = event.get("monsterType")
+            if monsterType == "DRAGON": #if dragon
+                print(event.get("monsterSubType"), "slain by Team", team)  #print dragon type and team
+
+            elif monsterType == "BARON_NASHOR": #if baron
+                print("BARON_NASHOR slain by Team", team) #print baron and team
