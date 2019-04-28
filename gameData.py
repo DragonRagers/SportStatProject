@@ -1,5 +1,4 @@
-#https://github.com/pseudonym117/Riot-Watcher
-from riotwatcher import RiotWatcher, ApiError
+from riotwatcher import RiotWatcher, ApiError #https://github.com/pseudonym117/Riot-Watcher
 import GameFrame
 
 #create RiotWatcher object and initialize some constants for testing
@@ -16,7 +15,9 @@ frames = game.get("frames")
 for i, frame in enumerate(frames):
     print("\nMinute:", i) #where i analogous to in game minutes
 
+    #calculates gold and experience difference
     goldDifference = 0
+    experienceDifference = 0
     participantFrames = frame.get("participantFrames")
     #print(participantFrames)
     for i in range(1,11): #for every player (assuming 10)
@@ -26,13 +27,16 @@ for i, frame in enumerate(frames):
         else: #else player on team 2
             team = False
 
-        if team: #if on team 1 add to the goldDifference
+        if team: #if on team 1 add to the goldDifference and experienceDifference
             goldDifference += player.get("totalGold")
-        else: #if on team 2 subtract fom goldDifference
+            experienceDifference += player.get("xp")
+        else: #if on team 2 subtract fom goldDifference and experienceDifference
             goldDifference -= player.get("totalGold")
+            experienceDifference += player.get("xp")
     print("Gold Difference:", goldDifference)
+    print("Experience Difference:", experienceDifference)
 
-
+    #prints objective kills (towers, inhibs, dragons, barons)
     events = frame.get("events")
     for event in events:
         #on building kill
