@@ -38,7 +38,7 @@ for i, frame in enumerate(frames):
             experienceDifference += player.get("xp")
         else: #if on team 2 subtract fom goldDifference and experienceDifference
             goldDifference -= player.get("totalGold")
-            experienceDifference += player.get("xp")
+            experienceDifference -= player.get("xp")
     print("Gold Difference:", goldDifference)
     print("Experience Difference:", experienceDifference)
     gameFrames[i].goldDifference = goldDifference
@@ -51,14 +51,14 @@ for i, frame in enumerate(frames):
         type = event.get("type")
         if type == "BUILDING_KILL":
             if event.get("teamId") == 200: #blue destroyed red building
-                team = 1
+                team = 0
             else: #red team destroyed blue building
-                team = 2
+                team = 1
 
             #if it was a tower/turret
             if event.get("buildingType") == "TOWER_BUILDING":
                 for t in range(i,len(gameFrames)): #for frames from now to the end of the game
-                    if team == 1:
+                    if team == 0:
                         gameFrames[t].turretDifference += 1 #if it was team 1 add to the difference
                     else:
                         gameFrames[t].turretDifference -= 1 #if it was team 2 subtract from the difference
@@ -67,10 +67,7 @@ for i, frame in enumerate(frames):
                 if end > len(gameFrames):
                     end = len(gameFrames)
                 for t in range(i,end):
-                    if team == 1:
-                        gameFrames[t].inhibsDestroyed[0] += 1
-                    else:
-                        gameFrames[t].inhibsDestroyed[1] += 1
+                    gameFrames[t].inhibsDestroyed[team] += 1
 
             print(event.get("buildingType"), "destroyed by Team ", team) #print building destroyed and by which team
             #100 = blue team, 200 = red team (based on testing)
@@ -78,15 +75,20 @@ for i, frame in enumerate(frames):
         #on epic (elite) monster kill
         elif type == "ELITE_MONSTER_KILL":
             if event.get("killerId") <= 5: #if killed by someone on team 1
-                team = 1
+                team = 0
             else: #else it was killed by team 2
-                team = 2
+                team = 1
 
             monsterType = event.get("monsterType")
             if monsterType == "DRAGON": #if dragon
                 print(event.get("monsterSubType"), "slain by Team", team)  #print dragon type and team
 
             elif monsterType == "BARON_NASHOR": #if baron
+                end = i+3
+                if end > len(gameFrames):
+                    end = len(gameFrames)
+                for t in range(i,end):
+                    gameFrames[t].baron[team] = 1
                 print("BARON_NASHOR slain by Team", team) #print baron and team
 
 for gF in gameFrames:
