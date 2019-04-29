@@ -11,7 +11,13 @@ gameid = 3016174568 #3024748419 #one of my recent games
 game = watcher.match.timeline_by_match(region, gameid) #returns dictionary of game info
 #documentation of API here: https://developer.riotgames.com/api-methods/
 
-
+dragonDict = {
+    "FIRE_DRAGON" : 0,
+    "AIR_DRAGON" : 1,
+    "EARTH_DRAGON" : 2,
+    "WATER_DRAGON" : 3,
+    "ELDER_DRAGON" : 4
+}
 #print(game, "\n")
 #get list of all frames and create list of blank GameFrame's
 frames = game.get("frames")
@@ -82,24 +88,24 @@ for i, frame in enumerate(frames):
 
             monsterType = event.get("monsterType")
             if monsterType == "DRAGON": #if dragon
-                dragonType = event.get("monsterSubType")
-                if dragonType == "FIRE_DRAGON":
-                    pass
-                elif dragonType == "AIR_DRAGON":
-                    pass
-                elif dragonType == "EARTH_DRAGON":
-                    pass
-                elif dragonType == "WATER_DRAGON":
-                    pass
-                elif dragonType == "ELDER_DRAGON":
-                    pass
+                dragonType = dragonDict.get(event.get("monsterSubType")) #converts dragonType to an int, see dragonDict
+                if not dragonType == 4: #if not elder dragons
+                    for t in range(i, len(gameFrames)): #add to the rest of the game
+                        gameFrames[t].dragons[team*4 + dragonType] += 1 #plus one to the respective position
+                else:
+                    end = i+2
+                    if end > len(gameFrames):
+                        end = len(gameFrames)
+                    for t in range(i, end): #for the next 2 minutes
+                        gameFrames[t].dragons[team*4 + dragonType] += 1
+
                 print(event.get("monsterSubType"), "slain by Team", team)  #print dragon type and team
 
             elif monsterType == "BARON_NASHOR": #if baron
                 end = i+3
                 if end > len(gameFrames):
                     end = len(gameFrames)
-                for t in range(i,end):
+                for t in range(i,end): #for the next 3 minutes
                     gameFrames[t].baron[team] = 1
                 print("BARON_NASHOR slain by Team", team) #print baron and team
 
