@@ -7,8 +7,8 @@ class GameFrame:
         #in game time in minutes
         self.time = time
 
-        #list where index 0 = no baron active, 1 = ally baron active, 2 = enemy baron active
-        self.baron = [0,0,0]
+        #list where index 1 = ally baron active, 2 = enemy baron active
+        self.baron = [0,0]
 
         #list dragon buffs, index is type and value is number of dragons taken. First 4 would be ally and later 4 would be enemy
         self.dragons = [0,0,0,0, 0,0,0,0] #ie [1,0,0...] could mean team 1 has one infernal dragon
