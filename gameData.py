@@ -6,7 +6,7 @@ from gameFrame import GameFrame
 key = input("Enter Riot API Key: ") #currently using development key, may apply for project key when project is actually working
 watcher = RiotWatcher(key)
 region = "na1"
-gameid = 3024748419 #one of my recent games
+gameid = 3016174568 #3024748419 #one of my recent games
 
 game = watcher.match.timeline_by_match(region, gameid) #returns dictionary of game info
 #documentation of API here: https://developer.riotgames.com/api-methods/
@@ -82,6 +82,17 @@ for i, frame in enumerate(frames):
 
             monsterType = event.get("monsterType")
             if monsterType == "DRAGON": #if dragon
+                dragonType = event.get("monsterSubType")
+                if dragonType == "FIRE_DRAGON":
+                    pass
+                elif dragonType == "AIR_DRAGON":
+                    pass
+                elif dragonType == "EARTH_DRAGON":
+                    pass
+                elif dragonType == "WATER_DRAGON":
+                    pass
+                elif dragonType == "ELDER_DRAGON":
+                    pass
                 print(event.get("monsterSubType"), "slain by Team", team)  #print dragon type and team
 
             elif monsterType == "BARON_NASHOR": #if baron
