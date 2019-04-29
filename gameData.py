@@ -9,7 +9,7 @@ dragonDict = {
     "ELDER_DRAGON" : 4
 }
 
-def getGameFrames(watcher, region, gameid):
+def getGameFrames(watcher, region, gameid, display = False):
     game = watcher.match.timeline_by_match(region, gameid) #returns dictionary of game info
     #documentation of API here: https://developer.riotgames.com/api-methods/
 
@@ -21,7 +21,8 @@ def getGameFrames(watcher, region, gameid):
         gameFrames.append(GameFrame(i))
 
     for i, frame in enumerate(frames):
-        print("\nMinute:", i) #where i analogous to in game minutes
+        if display:
+            print("\nMinute:", i) #where i analogous to in game minutes
 
         #calculates gold and experience difference
         goldDifference = 0
@@ -41,8 +42,9 @@ def getGameFrames(watcher, region, gameid):
             else: #if on team 2 subtract fom goldDifference and experienceDifference
                 goldDifference -= player.get("totalGold")
                 experienceDifference -= player.get("xp")
-        print("Gold Difference:", goldDifference)
-        print("Experience Difference:", experienceDifference)
+        if display:
+            print("Gold Difference:", goldDifference)
+            print("Experience Difference:", experienceDifference)
         gameFrames[i].goldDifference = goldDifference
         gameFrames[i].xpDifference = experienceDifference
 
@@ -71,7 +73,8 @@ def getGameFrames(watcher, region, gameid):
                     for t in range(i,end):
                         gameFrames[t].inhibsDestroyed[team] += 1
 
-                print(event.get("buildingType"), "destroyed by Team ", team) #print building destroyed and by which team
+                if display:
+                    print(event.get("buildingType"), "destroyed by Team ", team) #print building destroyed and by which team
                 #100 = blue team, 200 = red team (based on testing)
 
             #on epic (elite) monster kill
@@ -94,7 +97,8 @@ def getGameFrames(watcher, region, gameid):
                         for t in range(i, end): #for the next 2 minutes
                             gameFrames[t].dragons[team*4 + dragonType] += 1
 
-                    print(event.get("monsterSubType"), "slain by Team", team)  #print dragon type and team
+                    if display:
+                        print(event.get("monsterSubType"), "slain by Team", team)  #print dragon type and team
 
                 elif monsterType == "BARON_NASHOR": #if baron
                     end = i+3
@@ -102,23 +106,27 @@ def getGameFrames(watcher, region, gameid):
                         end = len(gameFrames)
                     for t in range(i,end): #for the next 3 minutes
                         gameFrames[t].baron[team] = 1
-                    print("BARON_NASHOR slain by Team", team) #print baron and team
+
+                    if display:
+                        print("BARON_NASHOR slain by Team", team) #print baron and team
     gameFramesAsArray = []
     for gF in gameFrames:
         gameFramesAsArray.append(gF.toArray())
     return gameFramesAsArray
 
-def getGameInfo(watcher, region, gameid): #gets general game data i.e. who won
+def getGameInfo(watcher, region, gameid, display = False): #gets general game data i.e. who won
     game = watcher.match.by_id(region, gameid)
     if game.get("teams")[0].get("win") == "Win": #if the first team won
-        print("Team 0 Won")
+        if display:
+            print("Team 0 Won")
         return 1 #1 as in the first team won
     else:
-        print("Team 1 Won")
+        if display:
+            print("Team 1 Won")
         return 0 #0 as in first team lost
 
-def generateData(watcher, region, gameid):
-    return getGameInfo(watcher, region, gameid), getGameFrames(watcher, region, gameid)
+def generateData(watcher, region, gameid, display = False):
+    return getGameInfo(watcher, region, gameid, display), getGameFrames(watcher, region, gameid, display)
 
 if __name__ == "__main__":
     #create RiotWatcher object and initialize some constants for testing
@@ -127,8 +135,8 @@ if __name__ == "__main__":
     region = "na1"
     gameid = 3016174568 #3024748419 #one of my recent games
 
-    gameFrames = getGameFrames(watcher, region, gameid)
-    for gF in gameFrames:
-        print(gF.toArray())
+    gameFrameArrays = getGameFrames(watcher, region, gameid, True)
+    for gFA in gameFrameArrays:
+        print(gFA)
 
     getGameInfo(watcher, region, gameid)
