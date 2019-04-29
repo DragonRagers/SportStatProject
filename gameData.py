@@ -9,8 +9,7 @@ dragonDict = {
     "ELDER_DRAGON" : 4
 }
 
-def getGameFrames(key, region, gameid):
-    watcher = RiotWatcher(key)
+def getGameFrames(watcher, region, gameid):
     game = watcher.match.timeline_by_match(region, gameid) #returns dictionary of game info
     #documentation of API here: https://developer.riotgames.com/api-methods/
 
@@ -104,15 +103,32 @@ def getGameFrames(key, region, gameid):
                     for t in range(i,end): #for the next 3 minutes
                         gameFrames[t].baron[team] = 1
                     print("BARON_NASHOR slain by Team", team) #print baron and team
+    gameFramesAsArray = []
+    for gF in gameFrames:
+        gameFramesAsArray.append(gF.toArray())
+    return gameFramesAsArray
 
-    return gameFrames
+def getGameInfo(watcher, region, gameid): #gets general game data i.e. who won
+    game = watcher.match.by_id(region, gameid)
+    if game.get("teams")[0].get("win") == "Win": #if the first team won
+        print("Team 0 Won")
+        return 1 #1 as in the first team won
+    else:
+        print("Team 1 Won")
+        return 0 #0 as in first team lost
+
+def generateData(watcher, region, gameid):
+    return getGameInfo(watcher, region, gameid), getGameFrames(watcher, region, gameid)
 
 if __name__ == "__main__":
     #create RiotWatcher object and initialize some constants for testing
     key = input("Enter Riot API Key: ") #currently using development key, may apply for project key when project is actually working
+    watcher = RiotWatcher(key)
     region = "na1"
     gameid = 3016174568 #3024748419 #one of my recent games
 
-    gameFrames = getGameFrames(key, region, gameid)
+    gameFrames = getGameFrames(watcher, region, gameid)
     for gF in gameFrames:
         print(gF.toArray())
+
+    getGameInfo(watcher, region, gameid)
