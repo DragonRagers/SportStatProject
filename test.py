@@ -30,12 +30,20 @@ def generateDataByGameIds(watcher, region, gameIds):
     print("File saved as:", fileName)
 
 
+def getGameIdBySummonerId(watcher, region, playerId):
+    matches = watcher.match.matchlist_by_account(region, playerId)
+    print(matches)
+
 def main():
     key = input("Enter Riot API Key: ") #currently using development key, may apply for project key when project is actually working
     w = RiotWatcher(key)
     r = "na1"
+    """
     g = [3016174568, 3019589039] #3024748419 #one of my recent games
     generateDataByGameIds(w, r, g)
+    """
+    getGameIdBySummonerId(w, r, )
+
 
 if __name__ == "__main__":
     main()
