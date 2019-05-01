@@ -35,14 +35,15 @@ def generateDataByGameIds(watcher, region, gameIds):
     print("File saved as:", fileName)
 
 
-def getGameIdsBySummonerName(watcher, region, name):
+def getGameIdsBySummonerNames(watcher, region, names):
     matchIds = []
-    id = watcher.summoner.by_name(region, name).get("accountId")
-    matches = watcher.match.matchlist_by_account(region, id, queue = QUEUES).get("matches")
-    #print(matches)
+    for name in names:
+        id = watcher.summoner.by_name(region, name).get("accountId")
+        matches = watcher.match.matchlist_by_account(region, id, queue = QUEUES).get("matches")
+        #print(matches)
 
-    for match in matches:
-        matchIds.append(match.get("gameId"))
+        for match in matches:
+            matchIds.append(match.get("gameId"))
     return matchIds
 
 
@@ -51,7 +52,7 @@ def main():
     w = RiotWatcher(key)
     r = "na1"
 
-    g = getGameIdsBySummonerName(w, r, "Ceiitechabuse") #3024748419 #one of my recent games
+    g = getGameIdsBySummonerNames(w, r, ["Dragonragers", "Ceiitechabuse", "Deathtojoe123"]) #3024748419 #one of my recent games
     #g = g[:10]
     generateDataByGameIds(w, r, g)
 
