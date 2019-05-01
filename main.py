@@ -2,7 +2,7 @@ from riotwatcher import RiotWatcher
 from gameData import generateData
 import time
 import csv
-import tqdm
+from tqdm import tqdm
 
 
 QUEUES = [400, 420, 440] #codes for relevent queues: https://developer.riotgames.com/game-constants.html
@@ -18,8 +18,8 @@ def unpack(data):
 def generateDataByGameIds(watcher, region, gameIds):
     wins = []
     frames = []
-    for i, gameId in enumerate(gameIds):
-        print("Working on game", i, "of", len(gameIds))
+    for gameId in tqdm(gameIds):
+        #print("Working on game", i, "of", len(gameIds))
         data = generateData(watcher, region, gameId)
         w, f = unpack(data)
         wins += w
