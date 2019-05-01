@@ -2,8 +2,10 @@ from riotwatcher import RiotWatcher
 from gameData import generateData
 import time
 import csv
+import tqdm
 
-queues = [400, 420, 440] #codes for relevent queues: https://developer.riotgames.com/game-constants.html
+
+QUEUES = [400, 420, 440] #codes for relevent queues: https://developer.riotgames.com/game-constants.html
 
 def unpack(data):
     unpackedWins = []
@@ -13,7 +15,7 @@ def unpack(data):
         unpackedFrames.append(frame)
     return unpackedWins, unpackedFrames
 
-def generateDataByGameIds(watcher, region, gameIds, queue = queues):
+def generateDataByGameIds(watcher, region, gameIds):
     wins = []
     frames = []
     for i, gameId in enumerate(gameIds):
@@ -36,7 +38,7 @@ def generateDataByGameIds(watcher, region, gameIds, queue = queues):
 def getGameIdsBySummonerName(watcher, region, name):
     matchIds = []
     id = watcher.summoner.by_name(region, name).get("accountId")
-    matches = watcher.match.matchlist_by_account(region, id).get("matches")
+    matches = watcher.match.matchlist_by_account(region, id, queue = QUEUES).get("matches")
     #print(matches)
 
     for match in matches:
@@ -49,7 +51,7 @@ def main():
     w = RiotWatcher(key)
     r = "na1"
 
-    g = getGameIdsBySummonerName(w, r, "DragonRagers") #3024748419 #one of my recent games
+    g = getGameIdsBySummonerName(w, r, "Ceiitechabuse") #3024748419 #one of my recent games
     #g = g[:10]
     generateDataByGameIds(w, r, g)
 
