@@ -5,7 +5,7 @@ import csv
 from tqdm import tqdm
 
 
-QUEUES = [400, 420, 440] #codes for relevent queues: https://developer.riotgames.com/game-constants.html
+QUEUES = [420] #codes for relevent queues: https://developer.riotgames.com/game-constants.html
 
 def unpack(data):
     unpackedWins = []
@@ -19,6 +19,7 @@ def generateDataByGameIds(watcher, region, gameIds):
     wins = []
     frames = []
     for gameId in tqdm(gameIds):
+        time.sleep(1)
         #print("Working on game", i, "of", len(gameIds))
         data = generateData(watcher, region, gameId)
         w, f = unpack(data)
@@ -52,7 +53,8 @@ def main():
     w = RiotWatcher(key)
     r = "na1"
 
-    g = getGameIdsBySummonerNames(w, r, ["Dragonragers", "Ceiitechabuse", "Deathtojoe123"]) #3024748419 #one of my recent games
+    g = getGameIdsBySummonerNames(w, r, ["tarzaned5", "pants are dragon", "santorin"])
+    #["Dragonragers", "Ceiitechabuse", "Deathtojoe123"]) #3024748419 #one of my recent games
     #g = g[:10]
     generateDataByGameIds(w, r, g)
 
