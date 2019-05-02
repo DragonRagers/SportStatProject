@@ -19,18 +19,18 @@ def generateDataByGameIds(watcher, region, gameIds):
     wins = []
     frames = []
     for gameId in tqdm(gameIds):
-        time.sleep(1)
+        time.sleep(2)
         #print("Working on game", i, "of", len(gameIds))
         data = generateData(watcher, region, gameId)
         w, f = unpack(data)
         wins += w
         frames += f
 
-    fileName = "data{}.csv".format(time.time())
-    file = open(fileName,'w',newline='')
+    fileName = "data.csv"
+    file = open(fileName,'a',newline='')
     writer = csv.writer(file, delimiter = ",")
-    writer.writerow(["Team 0 Win", "Time", "AllyBaron", "EnemyBaron", "AllyInfernal", "AllyAir", "AllyEarth", "AllyWater", "AllyElder", "EnemyInfernal",
-     "EnemyAir", "EnemyEarth", "EnemyWater", "EnemyElder", "XpDiff", "GoldDiff", "TurretDiff", "AllyInhibs", "EnemyInhibs"])
+    #writer.writerow(["Team 0 Win", "Time", "AllyBaron", "EnemyBaron", "AllyInfernal", "AllyAir", "AllyEarth", "AllyWater", "AllyElder", "EnemyInfernal",
+    # "EnemyAir", "EnemyEarth", "EnemyWater", "EnemyElder", "XpDiff", "GoldDiff", "TurretDiff", "AllyInhibs", "EnemyInhibs"])
     for i in range(len(wins)):
         writer.writerow([wins[i]] + frames[i])
     print("File saved as:", fileName)
@@ -53,7 +53,7 @@ def main():
     w = RiotWatcher(key)
     r = "na1"
 
-    g = getGameIdsBySummonerNames(w, r, ["tarzaned5", "pants are dragon", "santorin"])
+    g = getGameIdsBySummonerNames(w, r, ["tarzaned5", "pants are dragon", "santorin", "yeonbee", "tsm zven"])
     #["Dragonragers", "Ceiitechabuse", "Deathtojoe123"]) #3024748419 #one of my recent games
     #g = g[:10]
     generateDataByGameIds(w, r, g)
