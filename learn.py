@@ -21,7 +21,7 @@ random.shuffle(data)
 
 for d in data:
     wins.append(d[0])
-    frames.append(d[0:])
+    frames.append(d[1:])
 x_train,y_train = np.array(frames), np.array(wins)
 
 
