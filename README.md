@@ -5,6 +5,10 @@ I plan to create a (hopefully) live predictor of the chances of a team winning i
 ## Getting Data
 Data of games is being pulled from official Riot Games API: https://developer.riotgames.com/, specifically I implement a wrapper created by pseudonym117 which can be found here: https://github.com/pseudonym117/Riot-Watcher. Currently I am using a development API key which must be regenerated every 24 hours but once this project is done I will likely apply for a permenant project key.
 
+## My Data and Models
+Here's a link to my current data and tensorflow model:
+https://drive.google.com/open?id=1cRC91ur1sHvr_Mo0Zy_-HLt1OM5Nl237
+
 This project isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games
 or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are
 trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
