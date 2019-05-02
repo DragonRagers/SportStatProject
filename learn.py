@@ -5,6 +5,7 @@ from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
 import numpy as np
 import csv
 import random
+import time
 
 file = open("data.csv", newline = "")
 reader = csv.reader(file,delimiter=",")
