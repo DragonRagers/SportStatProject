@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from riotwatcher import RiotWatcher
 from gameData import getGameFrames
 
-gameid = 3024748419
+gameid = 3024863124
 watcher = RiotWatcher("RGAPI-ce1e9b86-88e7-4efb-8ff0-4aa1df56abda")
 data = np.array(getGameFrames(watcher, "na1", gameid))
 
