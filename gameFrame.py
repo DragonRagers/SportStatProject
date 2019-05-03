@@ -7,8 +7,11 @@ class GameFrame:
         #in game time in minutes
         self.time = time
 
-        #list where index 1 = ally baron active, 2 = enemy baron active
+        #list where index 0 = ally baron active, 1 = enemy baron active
         self.baron = [0,0]
+
+        #0 = ally riftherald, 1 = enemy rift
+        self.rift = [0,0]
 
         #list dragon buffs, index is type (including elder) and value is number of dragons taken. First 5 would be ally and later 5 would be enemy
         self.dragons = [0,0,0,0,0, 0,0,0,0,0] #ie [1,0,0...] could mean team 1 has one infernal dragon
@@ -26,4 +29,4 @@ class GameFrame:
         self.inhibsDestroyed = [0,0]
 
     def toArray(self):
-        return [self.time] + self.baron + self.dragons + [self.xpDifference / (self.time + 1), self.goldDifference / (self.time + 1), self.turretDifference] + self.inhibsDestroyed
+        return [self.time] + self.baron + self.rift + self.dragons + [self.xpDifference / (self.time + 1), self.goldDifference / (self.time + 1), self.turretDifference] + self.inhibsDestroyed
