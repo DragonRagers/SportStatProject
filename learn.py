@@ -4,20 +4,23 @@ import numpy as np
 import csv
 import random
 import time
-
+import os
 
 fileNames = []
+for fileName in os.listdir("data"):
+    fileNames.append(fileName)
+#fileNames = ["tarzaned5", "sophist sage1", "pants are dragon", "santorin"]
 wins = []
 frames = []
 data = []
 
 for name in fileNames:
-    file = open("{}.csv".formant(name), newline = "")
+    file = open("data/{}".format(name), newline = "")
     reader = csv.reader(file,delimiter=",")
     for row in reader:
         data.append(row)
-    random.shuffle(data)
     file.close()
+random.shuffle(data)
 
 for d in data:
     wins.append(d[0])
