@@ -24,7 +24,7 @@ random.shuffle(data)
 
 for d in data:
     wins.append(d[0])
-    frames.append(d[1:])
+    frames.append(d[2:]) #ignores who won and time
 x_train,y_train = np.array(frames), np.array(wins)
 
 
@@ -37,5 +37,5 @@ model.add(tf.keras.layers.Dense(1))
 model.add(tf.keras.layers.Activation("sigmoid"))
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-model.fit(x_train, y_train, epochs=5)
+model.fit(x_train, y_train, epochs=2)
 model.save("model{}.model".format(time.time()))
