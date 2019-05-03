@@ -53,7 +53,8 @@ def main():
     w = RiotWatcher(key)
     r = "na1"
 
-    g = getGameIdsBySummonerNames(w, r, ["tarzaned5", "pants are dragon", "santorin", "yeonbee", "tsm zven"])
+    g = getGameIdsBySummonerNames(w, r,
+        ["tarzaned5", "sophist sage1", "pants are dragon", "santorin", "tsm zven", "wayofthetempesst", "shawarmaeater69", "elodaddy esports", "nasfinest", "shiphtur"])
     #["Dragonragers", "Ceiitechabuse", "Deathtojoe123"]) #3024748419 #one of my recent games
     #g = g[:10]
     generateDataByGameIds(w, r, g)
