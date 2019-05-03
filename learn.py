@@ -1,7 +1,5 @@
 #from generateData import generateDataByGameIds, getGameIdsBySummonerName
 import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
 import numpy as np
 import csv
 import random
