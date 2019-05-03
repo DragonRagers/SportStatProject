@@ -15,7 +15,7 @@ def unpack(data):
         unpackedFrames.append(frame)
     return unpackedWins, unpackedFrames
 
-def generateDataByGameIds(watcher, region, gameIds):
+def generateDataByGameIds(watcher, region, gameIds, playerName):
     wins = []
     frames = []
     for gameId in tqdm(gameIds):
@@ -26,7 +26,7 @@ def generateDataByGameIds(watcher, region, gameIds):
         wins += w
         frames += f
 
-    fileName = "data.csv"
+    fileName = "data/{}.csv".format(playerName)
     file = open(fileName,'a',newline='')
     writer = csv.writer(file, delimiter = ",")
     #writer.writerow(["Team 0 Win", "Time", "AllyBaron", "EnemyBaron", "AllyInfernal", "AllyAir", "AllyEarth", "AllyWater", "AllyElder", "EnemyInfernal",
@@ -37,15 +37,17 @@ def generateDataByGameIds(watcher, region, gameIds):
 
 
 def getGameIdsBySummonerNames(watcher, region, names):
-    matchIds = []
+    matchIdsByName = []
     for name in names:
+        matchIds = []
         id = watcher.summoner.by_name(region, name).get("accountId")
         matches = watcher.match.matchlist_by_account(region, id, queue = QUEUES).get("matches")
         #print(matches)
 
         for match in matches:
             matchIds.append(match.get("gameId"))
-    return matchIds
+        matchIdsByName.append((name,matchIds))
+    return matchIdsByName
 
 
 def main():
@@ -53,11 +55,18 @@ def main():
     w = RiotWatcher(key)
     r = "na1"
 
-    g = getGameIdsBySummonerNames(w, r,
+    games = getGameIdsBySummonerNames(w, r,
         ["tarzaned5", "sophist sage1", "pants are dragon", "santorin", "tsm zven", "wayofthetempesst", "shawarmaeater69", "elodaddy esports", "nasfinest", "shiphtur"])
     #["Dragonragers", "Ceiitechabuse", "Deathtojoe123"]) #3024748419 #one of my recent games
     #g = g[:10]
-    generateDataByGameIds(w, r, g)
+    for g in games:
+        name  = g[0]
+        print(name)
+        generateDataByGameIds(w, r, g[1], name)
+    """
+    for i in range (round(len(g)/50)):
+        generateDataByGameIds(w, r, g[50*i:50*(i+1)])
+    """
 
 
 if __name__ == "__main__":
