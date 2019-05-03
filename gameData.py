@@ -85,7 +85,7 @@ def getGameFrames(watcher, region, gameid, display = False):
                     team = 1
 
                 monsterType = event.get("monsterType")
-                print(monsterType)
+                #print(monsterType)
                 if monsterType == "DRAGON": #if dragon
                     dragonType = dragonDict.get(event.get("monsterSubType")) #converts dragonType to an int, see dragonDict
                     if not dragonType == 4: #if not elder dragons
