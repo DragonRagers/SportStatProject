@@ -4,15 +4,25 @@ import matplotlib.pyplot as plt
 from riotwatcher import RiotWatcher
 from gameData import getGameFrames
 
-gameid = 3024863124
-watcher = RiotWatcher("RGAPI-ce1e9b86-88e7-4efb-8ff0-4aa1df56abda")
-data = np.array(getGameFrames(watcher, "na1", gameid))
+
+gameid = 2988389854
+#key = input("Enter Riot API key:")
+key = "RGAPI-2eaeb8fc-7cdc-479b-8c98-1ed4abcc9189"
+watcher = RiotWatcher(key)
+
+data = getGameFrames(watcher, "na1", gameid)
+time = [item[0] for item in data]
+
+for i in range(len(data)):
+    data[i] = data[i][1:]
+data = np.array(data)
+
+#data = np.array([[i] + [0]*19 for i in range(40)])
 
 model = tf.keras.models.load_model("model.model")
 
 predictions = model.predict(data)
 
-time = [item[0] for item in data]
 t1 = [item[0] for item in predictions]
 t2 = [1- item[0] for item in predictions]
 
