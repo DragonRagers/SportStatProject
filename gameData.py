@@ -85,6 +85,7 @@ def getGameFrames(watcher, region, gameid, display = False):
                     team = 1
 
                 monsterType = event.get("monsterType")
+                print(monsterType)
                 if monsterType == "DRAGON": #if dragon
                     dragonType = dragonDict.get(event.get("monsterSubType")) #converts dragonType to an int, see dragonDict
                     if not dragonType == 4: #if not elder dragons
@@ -109,6 +110,16 @@ def getGameFrames(watcher, region, gameid, display = False):
 
                     if display:
                         print("BARON_NASHOR slain by Team", team) #print baron and team
+
+                elif monsterType == "RIFTHERALD":
+                    end = i+4
+                    if end > len(gameFrames):
+                        end = len(gameFrames)
+                    for t in range(i,end):
+                        gameFrames[t].rift[team] += 1
+
+                    if display:
+                        print("RIFT HERALD slain by Team", team)
     gameFramesAsArray = []
     for gF in gameFrames:
         gameFramesAsArray.append(gF.toArray())
@@ -133,7 +144,7 @@ if __name__ == "__main__":
     key = input("Enter Riot API Key: ") #currently using development key, may apply for project key when project is actually working
     watcher = RiotWatcher(key)
     region = "na1"
-    gameid = 3016174568 #3024748419 #one of my recent games
+    gameid = 3026756563 #3024748419 #one of my recent games
 
     gameFrameArrays = getGameFrames(watcher, region, gameid, True)
     for gFA in gameFrameArrays:
