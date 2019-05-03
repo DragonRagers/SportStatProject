@@ -5,17 +5,19 @@ import csv
 import random
 import time
 
-file = open("data.csv", newline = "")
-reader = csv.reader(file,delimiter=",")
-next(reader) #skips the  coulum names
 
-
+fileNames = []
 wins = []
 frames = []
 data = []
-for row in reader:
-    data.append(row)
-random.shuffle(data)
+
+for name in fileNames:
+    file = open("{}.csv".formant(name), newline = "")
+    reader = csv.reader(file,delimiter=",")
+    for row in reader:
+        data.append(row)
+    random.shuffle(data)
+    file.close()
 
 for d in data:
     wins.append(d[0])
