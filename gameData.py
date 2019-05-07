@@ -9,6 +9,8 @@ dragonDict = {
     "ELDER_DRAGON" : 4
 }
 
+numChamps = 175
+
 def getGameFrames(watcher, region, gameid, display = False):
     game = watcher.match.timeline_by_match(region, gameid) #returns dictionary of game info
     #documentation of API here: https://developer.riotgames.com/api-methods/
@@ -130,14 +132,27 @@ def getGameInfo(watcher, region, gameid, display = False): #gets general game da
     if game.get("teams")[0].get("win") == "Win": #if the first team won
         if display:
             print("Team 0 Won")
-        return 1 #1 as in the first team won
+        win = 1 #1 as in the first team won
     else:
         if display:
             print("Team 1 Won")
-        return 0 #0 as in first team lost
+        win = 0 #0 as in first team lost
+
+    #get champian ids
+    players = game.get("participants")
+    ally = [0] * numChamps
+    enemy = [0] * numChamps
+    for player in players:
+        if player.get("teamId") == 100: #blue side
+            ally[player.get("championId")] += 1
+        else:
+            enemy[player.get("championId")] += 1
+
+    return win, ally + enemy
 
 def generateData(watcher, region, gameid, display = False):
-    return getGameInfo(watcher, region, gameid, display), getGameFrames(watcher, region, gameid, display)
+    win, champs = getGameInfo(watcher, region, gameid, display)
+    return win, getGameFrames(watcher, region, gameid, display) #, champs
 
 if __name__ == "__main__":
     #create RiotWatcher object and initialize some constants for testing
