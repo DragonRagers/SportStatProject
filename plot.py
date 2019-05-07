@@ -3,11 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from riotwatcher import RiotWatcher
 from gameData import getGameFrames
-
+import pickle
+from sklearn.linear_model import LogisticRegression
 
 gameid = 2988389854
 #key = input("Enter Riot API key:")
-key = "RGAPI-2eaeb8fc-7cdc-479b-8c98-1ed4abcc9189"
+key = "RGAPI-c0ac5943-5349-4396-9ac7-9d29a3458e09"
 watcher = RiotWatcher(key)
 
 data = getGameFrames(watcher, "na1", gameid)
@@ -18,13 +19,17 @@ for i in range(len(data)):
 data = np.array(data)
 
 #data = np.array([[i] + [0]*19 for i in range(40)])
+if False: #neural net or logit model
+    model = tf.keras.models.load_model("model.model")
+    predictions = model.predict(data)
+    predictions = [p[0] for p in predictions]
+else:
+    logmodel = pickle.load(open("logmodel.p", "rb"))
+    predictions = logmodel.predict(data)
+    predictions = [int(i) for i in predictions]
 
-model = tf.keras.models.load_model("model.model")
-
-predictions = model.predict(data)
-
-t1 = [item[0] for item in predictions]
-t2 = [1- item[0] for item in predictions]
+t1 = [item for item in predictions]
+t2 = [1-item for item in predictions]
 
 plt.ylim(0, 1)
 plt.xlabel("Time (minutes)")
