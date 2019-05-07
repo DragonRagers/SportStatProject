@@ -92,13 +92,13 @@ def getGameFrames(watcher, region, gameid, display = False):
                     dragonType = dragonDict.get(event.get("monsterSubType")) #converts dragonType to an int, see dragonDict
                     if not dragonType == 4: #if not elder dragons
                         for t in range(i, len(gameFrames)): #add to the rest of the game
-                            gameFrames[t].dragons[team*4 + dragonType] += 1 #plus one to the respective position
+                            gameFrames[t].dragons[team*5 + dragonType] += 1 #plus one to the respective position
                     else:
                         end = i+2
                         if end > len(gameFrames):
                             end = len(gameFrames)
                         for t in range(i, end): #for the next 2 minutes
-                            gameFrames[t].dragons[team*4 + dragonType] += 1
+                            gameFrames[t].dragons[team*5 + dragonType] += 1
 
                     if display:
                         print(event.get("monsterSubType"), "slain by Team", team)  #print dragon type and team
