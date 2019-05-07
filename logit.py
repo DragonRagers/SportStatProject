@@ -48,7 +48,7 @@ def trainModel():
 
 
 def main():
-    #trainModel()
+    trainModel()
 
 
 if __name__ == "__main__":
