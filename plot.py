@@ -8,6 +8,9 @@ from sklearn.linear_model import LogisticRegression
 from generateData import getGameIdsBySummonerNames
 
 
+def unconfidence(i):
+    return (i - .5) ** 3 * 4 + .5
+
 def plotByGameId(watcher, region, gameid, type = 0):
     data = getGameFrames(watcher, region, gameid)
     time = [item[0] for item in data]
@@ -26,8 +29,9 @@ def plotByGameId(watcher, region, gameid, type = 0):
         predictions = logmodel.predict(data)
         predictions = [int(i) for i in predictions]
 
+    predictions = [unconfidence(item) for item in predictions]
     t1 = [item for item in predictions]
-    t2 = [1-item for item in predictions]
+    t2 = [1 - item for item in t1]
 
     plt.ylim(0, 1)
     plt.xlabel("Time (minutes)")
@@ -54,7 +58,7 @@ def main():
     r = "na1"
     g = 3036487185
     #plotByGameId(w,  r, g, 0)
-    plotBySummonerName(w, r, "DragonRagers", 0)
+    plotBySummonerName(w, r, "Deathtojoe123", 0)
 
 
 if __name__ == "__main__":
