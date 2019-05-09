@@ -41,7 +41,7 @@ def plotByGameId(watcher, region, gameid, type = 0):
 
 
 def plotBySummonerName(watcher, region, name, type = 0):
-    queues = [440]
+    queues = [400, 420, 430, 440, 450]
     gameId = getGameIdsBySummonerNames(watcher, region, [name], queues)[0][1][0] #gets first gameId from that player
     print(gameId)
     plotByGameId(watcher, region, gameId, type)
