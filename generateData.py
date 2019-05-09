@@ -36,12 +36,12 @@ def generateDataByGameIds(watcher, region, gameIds, playerName):
     print("File saved as:", fileName)
 
 
-def getGameIdsBySummonerNames(watcher, region, names):
+def getGameIdsBySummonerNames(watcher, region, names, q = QUEUES):
     matchIdsByName = []
     for name in names:
         matchIds = []
         id = watcher.summoner.by_name(region, name).get("accountId")
-        matches = watcher.match.matchlist_by_account(region, id, queue = QUEUES).get("matches")
+        matches = watcher.match.matchlist_by_account(region, id, queue = q).get("matches")
         #print(matches)
 
         for match in matches:
