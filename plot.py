@@ -5,9 +5,10 @@ from riotwatcher import RiotWatcher
 from gameData import getGameFrames
 import pickle
 from sklearn.linear_model import LogisticRegression
+from generateData import getGameIdsBySummonerNames
 
 
-def plot(watcher, region, gameid, type = 0):
+def plotByGameId(watcher, region, gameid, type = 0):
     data = getGameFrames(watcher, region, gameid)
     time = [item[0] for item in data]
 
@@ -39,6 +40,12 @@ def plot(watcher, region, gameid, type = 0):
     plt.show()
 
 
+def plotBySummonerName(watcher, region, name, type = 0):
+    queues = [440]
+    gameId = getGameIdsBySummonerNames(watcher, region, [name], queues)[0][1][0] #gets first gameId from that player
+    print(gameId)
+    plotByGameId(watcher, region, gameId, type)
+
 def main():
 
     #key = input("Enter Riot API key:")
@@ -46,7 +53,8 @@ def main():
     w = RiotWatcher(key)
     r = "na1"
     g = 3036487185
-    plot(w,  r, g, 0)
+    #plotByGameId(w,  r, g, 0)
+    plotBySummonerName(w, r, "DragonRagers", 0)
 
 
 if __name__ == "__main__":
