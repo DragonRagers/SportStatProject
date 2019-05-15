@@ -25,11 +25,15 @@ def plotByGameId(watcher, region, gameid, type = 0):
         predictions = model.predict(data)
         predictions = [p[0] for p in predictions]
     else:
-        logmodel = pickle.load(open("logmodel.p", "rb"))
-        predictions = logmodel.predict(data)
-        predictions = [int(i) for i in predictions]
+        predictions = []
+        for i,d in enumerate(data):
+            logmodel = pickle.load(open("logit/logmodel{}.p".format(i), "rb"))
+            predictions.append(float(logmodel.predict([d])[0]))
 
-    predictions = [unconfidence(item) for item in predictions]
+
+    #artificially makes the confidence lower
+    #predictions = [unconfidence(item) for item in predictions]
+
     t1 = [item for item in predictions]
     t2 = [1 - item for item in t1]
 
@@ -53,12 +57,12 @@ def plotBySummonerName(watcher, region, name, type = 0):
 def main():
 
     #key = input("Enter Riot API key:")
-    key = "RGAPI-8c6e3728-5b5d-45ff-8a82-07bf31d468ea"
+    key = "RGAPI-69e9cbd7-035f-465f-8cc1-d1826272e5dc"
     w = RiotWatcher(key)
     r = "na1"
-    g = 3036487185
+    g = 3040961431
     #plotByGameId(w,  r, g, 0)
-    plotBySummonerName(w, r, "Deathtojoe123", 0)
+    plotBySummonerName(w, r, "shiphtur", 1)
 
 
 if __name__ == "__main__":
