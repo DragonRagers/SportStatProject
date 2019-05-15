@@ -20,12 +20,12 @@ def plotByGameId(watcher, region, gameid, type = 0):
     data = np.array(data)
 
     #data = np.array([[i] + [0]*19 for i in range(40)])
+    predictions = []
     if type == 0: #neural net or logit model
-        model = tf.keras.models.load_model("model.model")
-        predictions = model.predict(data)
-        predictions = [p[0] for p in predictions]
+        for i,d in enumerate(data):
+            model = tf.keras.models.load_model("nn/model{}.model".format(i))
+            predictions.append(model.predict(np.array([d]))[0])
     else:
-        predictions = []
         for i,d in enumerate(data):
             logmodel = pickle.load(open("logit/logmodel{}.p".format(i), "rb"))
             predictions.append(float(logmodel.predict([d])[0]))
@@ -62,7 +62,7 @@ def main():
     r = "na1"
     g = 3040961431
     #plotByGameId(w,  r, g, 0)
-    plotBySummonerName(w, r, "shiphtur", 1)
+    plotBySummonerName(w, r, "dragonragers", 0)
 
 
 if __name__ == "__main__":
