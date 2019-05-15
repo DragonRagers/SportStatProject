@@ -29,4 +29,5 @@ class GameFrame:
         self.inhibsDestroyed = [0,0]
 
     def toArray(self):
-        return [self.time] + self.baron + self.rift + self.dragons + [self.xpDifference / (self.time + 1), self.goldDifference / (self.time + 1), self.turretDifference] + self.inhibsDestroyed
+        return [self.time] + self.baron + self.rift + self.dragons + [self.xpDifference, self.goldDifference, self.turretDifference] + self.inhibsDestroyed
+        #return [self.time] + self.baron + self.rift + self.dragons + [self.xpDifference, self.goldDifference, self.turretDifference] + self.inhibsDestroyed
